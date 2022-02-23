@@ -26,7 +26,7 @@ module.exports = async function (fastify, opts, next) {
         }
       },
       headers: {
-        'x-access-token': 'goldapi-1100grhtkzka890d-io',
+        'x-access-token': '',
         'Content-Type': 'application/json'
       },
     }

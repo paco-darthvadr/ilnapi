@@ -18,7 +18,7 @@ fastify.register(require('fastify-swagger'), {
       url: 'https://swagger.io',
       description: 'Find more info here'
     },
-    host: 'paco.ddns.me/',
+    host: '0.0.0.0:3000/',
     schemes: ['http'],
     consumes: ['application/json'],
     produces: ['application/json'],
@@ -30,8 +30,8 @@ fastify.register(require('fastify-swagger'), {
           id: { type: 'string', format: 'uuid' },
           name: { type: 'string'},
           gold: { type: 'string', body: 'number' },
-          goldoz: { type: 'number' , oz: 'number' },
-          goldg: { type: 'number' , gram: 'number' }
+          goldoz: { type: 'string' , oz: 'number' },
+          goldg: { type: 'string' , gram: 'number' }
 
         }
       }

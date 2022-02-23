@@ -37,7 +37,7 @@ module.exports = async function (fastify, opts, next) {
        var oz = body.price;
        const gram = oz * 0.03215074;
        fastify.log.info(JSON.stringify(gram));
-       fs.writeFileSync('./public/goldg.html', gram);
+       fs.writeFileSync('./public/goldg.html', JSON.stringify(gram));
       })
      return { status: 'ok'};
   })

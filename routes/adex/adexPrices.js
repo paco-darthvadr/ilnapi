@@ -1,7 +1,9 @@
 'use strict'
 
+const fetch = require('node-fetch')
+
 module.exports = async function (fastify, opts, next) {
-  fastify.get('/', async function (request, reply, gold) {
+  fastify.get('/', async function (request, response,reply, gold) {
     var request = require('request');
     const fs = require('fs')
     // request from 'request';
@@ -26,15 +28,13 @@ module.exports = async function (fastify, opts, next) {
       },
     }
      
-     request(opts, function (error, response) {
-       if (error) throw new Error(error);
-       //Your code here
-       const body = JSON.parse(response.body);
-       fastify.log.info(JSON.stringify(response.body));
-       fs.writeFileSync('./public/adex.html', JSON.stringify(body));
-     })
-     return { status: 'ok'};
-
+    fetch('https://stats-api.atomicdex.io/api/v1/ticker', opts)
+    .then((response) => response.json())
+    .then((data) => {
+      let last_price = data.last_price;
+      response.status(200).send({ status: 'ok', last_price: data });
+      fs.writeFileSync('./public/adex.html', JSON.stringify(data));
+    });
   })
   next()
 }

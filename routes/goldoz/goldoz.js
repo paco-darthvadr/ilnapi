@@ -1,9 +1,9 @@
 'use strict'
 
-
+const fetch = require('node-fetch')
 
 module.exports = async function (fastify, opts, next) {
-  fastify.get('/', async function (request, reply, gram, oz) {
+  fastify.get('/', async function (request, response, reply, gram, oz) {
     var request = require('request');
     const fs = require('fs');
     // request from 'request';
@@ -26,21 +26,19 @@ module.exports = async function (fastify, opts, next) {
         }
       },
       headers: {
-        'x-access-token': 'api-key',
+        'x-access-token': 'goldapi-1100grhtkzka890d-io',
         'Content-Type': 'application/json'
       },
     }
      
-     request(opts, function (error, response) {
-       if (error) throw new Error(error);
-       //Your code here
-       const body = JSON.parse(response.body)
-       const oz = body.price;
-       const gram = oz * 0.03215074;
-       fastify.log.info(JSON.stringify(oz)); 
-       fs.writeFileSync('./public/goldoz.html', JSON.stringify(oz));     
-     })
-     return { status: 'ok'};
-  })
-  next()
+    fetch('https://www.goldapi.io/api/XAU/USD', opts)
+    .then((response) => response.json())
+    .then((data) => {
+      let price = data.price;
+      response.status(200).send({ status: 'ok', price: price });
+      fs.writeFileSync('./public/goldoz.html', JSON.stringify(price));
+    });
+     
+ });
+ next()
 }

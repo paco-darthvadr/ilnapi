@@ -22,20 +22,7 @@ fastify.register(require('fastify-swagger'), {
     schemes: ['http'],
     consumes: ['application/json'],
     produces: ['application/json'],
-
-    definitions: {
-      gold: {
-        type: 'array',
-        properties: {
-          id: { type: 'string', format: 'uuid' },
-          name: { type: 'string'},
-          gold: { type: 'string', body: 'number' },
-          goldoz: { type: 'string' , oz: 'number' },
-          goldg: { type: 'string' , gram: 'number' }
-
-        }
-      }
-    },
+    
     securityDefinitions: {
       apiKey: {
         type: 'apiKey',

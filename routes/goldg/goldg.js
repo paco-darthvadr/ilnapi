@@ -2,7 +2,7 @@
 
 
 module.exports = async function (fastify, opts, next) {
-  fastify.get('/', async function (request, response, gram) {
+  fastify.get('/', async function (request, response, reply, gram) {
     var request = require('request');
     const fs = require('fs');
     // request from 'request';
@@ -26,7 +26,7 @@ module.exports = async function (fastify, opts, next) {
         }
       },
       headers: {
-        'x-access-token': '',
+        'x-access-token': 'api-key',
         'Content-Type': 'application/json'
       },
     }
@@ -39,7 +39,9 @@ module.exports = async function (fastify, opts, next) {
        fastify.log.info(JSON.stringify(gram));
        fs.writeFileSync('./public/goldg.html', JSON.stringify(gram));
       })
-     return { status: 'ok'};
+      request(opts)
+      reply.then(reply.send(JSON.stringify(gram)))
+      return { status: 'ok', gold: (JSON.stringify(gram)) }
   })
   next()
 }

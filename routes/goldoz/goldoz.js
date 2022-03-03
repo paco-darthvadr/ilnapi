@@ -26,7 +26,7 @@ module.exports = async function (fastify, opts, next) {
         }
       },
       headers: {
-        'x-access-token': '',
+        'x-access-token': 'api-key',
         'Content-Type': 'application/json'
       },
     }

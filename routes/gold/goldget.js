@@ -2,7 +2,7 @@
 
 
 module.exports = async function (fastify, opts, next) {
-  fastify.get('/', async function (request, response, gram) {
+  fastify.get('/', async function (request, response, reply, gram) {
     var request = require('request');
     const fs = require('fs');
     // request from 'request';
@@ -26,20 +26,24 @@ module.exports = async function (fastify, opts, next) {
         }
       },
       headers: {
-        'x-access-token': '',
+        'x-access-token': 'api-key',
         'Content-Type': 'application/json'
       },
     }
-     
-     request(opts, function (error, response) {
-       if (error) throw new Error(error);
-       const body = JSON.parse(response.body)
-       var oz = body.price;
-       const gram = oz * 0.03215074;
-       fastify.log.info(JSON.stringify(body));
-       fs.writeFileSync('./public/gold.html', JSON.stringify(body));
-      })
-      return { status: 'ok'};
-  })
-  next()
+
+     async function request(opts, response) {
+      const res = request(opts, response)
+      await reply
+      const body = JSON.stringify(res.body)
+      var oz = body.price;
+      const gram = oz * 0.03215074;
+      fastify.log.info(JSON.stringify(body));
+     } 
+    request(opts)
+    reply.then(reply.send(JSON.stringify(body)))
+    return { status: 'ok', gold: (JSON.stringify(body)) }
+     .then(body => console.log('resolved', body));
+ })
+ next()
 }
+
